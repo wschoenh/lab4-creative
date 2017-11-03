@@ -1,0 +1,98 @@
+<html>
+<head>
+<title>Search for Movies!</title>
+<link rel="stylesheet" href="basicStyles.css">
+
+<script
+  src="http://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous">
+</script>
+
+<script>
+$(document).ready(function() {
+
+  $("#movieFilter").change(function() {
+	if ($("#movieFilter").val() == 'clear'){
+		$("#searchResults").html('');
+		return;
+	}
+	var myurl = "filterSearch?f="+$("#movieFilter").val();
+	//alert("inside movie filter change function");
+    $.ajax({
+    url : myurl,
+    dataType : "json",
+    success : parseData
+    });
+  });
+  
+
+
+  $("#searchButton").click(function(e){
+  e.preventDefault();
+
+  var filterValue = $("#movieField").val()
+
+  var myurl = "query?t="+$("#movieField").val().replace(/ /g, '+');
+
+    $.ajax({
+    url : myurl,
+    dataType : "json",
+    success : parseData
+    });
+
+  });
+
+
+
+  function parseData(data){
+ //alert('inside function parseData');
+		var everything = '';
+		if (data['results'].length == 0){
+			everything += "<ul><li>No results!</li></ul>";
+
+		}
+		else{
+			for (var i = 0; i < data['results'].length; i++){
+				var title = data['results'][i]['title'];
+				var releaseDate = data['results'][i]['release_date'];
+				var rating = data['results'][i]['vote_average'];
+				var overview = data['results'][i]['overview']
+			
+				everything += "<ul>"
+				if (title) everything += "<li><b>Title:</b> " + title + "</li>"
+				if (releaseDate) everything += "<li><b>Release Date:</b> " + releaseDate + "</li>"
+				if (rating) everything += "<li><b>Rating:</b> " + rating + "</li>"
+				if (overview) everything += "<li><b>Overview:</b> " + overview + "</li>"
+				everything += "</ul><hr/>";
+			}
+		}
+		$("#searchResults").html(everything);
+  }
+
+});
+</script>
+</head>
+
+<body>
+<div class="container">
+
+<div class="stackexchange" style="background-color:#87CEFA">
+<div><h1>Search for Movies!</h1></div><hr/>
+<form>
+Search for a movie by name: <input type="text" id="movieField" value="">
+<select id="movieFilter">
+  <option value="clear"></option>
+  <option value="popular">Most Popular Movies</option>
+  <option value="bestDramas">Best Dramas</option>
+  <option value="bestTomCruiseMovies">Best Tom Cruise Movies</option>
+</select>
+<input id="searchButton" type="submit" value="Submit">
+</form>
+<p>Search Results</p>
+<div id="searchResults"></div>
+</div>
+</div>
+
+</body>
+</html>

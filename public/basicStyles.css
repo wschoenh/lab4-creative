@@ -1,0 +1,25 @@
+body {
+ margin:0;
+ padding:0;
+ color:#333;
+ background-color:#eee;
+ font:1em/1.2 "Helvetica Neue",Helvetica,Arial,Geneva,sans-serif
+}
+a:link {
+ color:#4169e1
+}
+a:hover {
+ color:red
+}
+.container {
+ max-width:50em;
+ margin:0 auto;
+ background-color:#fff
+}
+h1{
+ vertical-align:middle;
+ text-align:center;
+}
+hr {
+ background-color: #FFFFE0;
+}
